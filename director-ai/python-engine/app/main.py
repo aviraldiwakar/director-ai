@@ -1,22 +1,18 @@
-from fastapi import FastAPI, BackgroundTasks, HTTPException
-from pydantic import BaseModel
-from app.services.orchestrator_client import process_production_pipeline
+import asyncio
+from fastapi import FastAPI
+from contextlib import asynccontextmanager
+from app.agent_loop import run_autonomous_loop
 
-app = FastAPI(title="Director AI - Cognitive Engine")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Start the background loop when the server starts
+    loop_task = asyncio.create_task(run_autonomous_loop())
+    yield
+    # Cancel it when the server shuts down
+    loop_task.cancel()
 
-class GenerationRequest(BaseModel):
-    job_id: str
-    theme: str
+app = FastAPI(lifespan=lifespan)
 
-@app.get("/")
+@app.get("/health")
 def health_check():
-    return {"status": "online", "service": "Director AI Cognitive Engine"}
-
-@app.post("/generate")
-async def trigger_generation(request: GenerationRequest, background_tasks: BackgroundTasks):
-    if not request.job_id or not request.theme:
-        raise HTTPException(status_code=400, detail="job_id and theme are required")
-
-    # Trigger autonomous background pipeline execution
-    background_tasks.add_task(process_production_pipeline, request.job_id, request.theme)
-    return {"status": "processing_started", "job_id": request.job_id}
+    return {"status": "Agent Engine Online"}
