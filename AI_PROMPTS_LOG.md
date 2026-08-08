@@ -1,69 +1,67 @@
-# AI Usage & Prompts Log
+# AI Prompts & Usage Log
+**Project:** Autonomous Tech Persona Agent (originally Director AI)
 **Hackathon:** ViCodathon
-**Project:** Director AI (Autonomous AI Creator)
+**Developer:** Aviral Diwakar
+
+## 📝 Overview
+This document serves as the official AI usage log for the ViCodathon Authenticity Review. The project underwent a significant pivot mid-hackathon. Initially, the architecture was designed for an automated video scripting pipeline. After reviewing the strict guidelines for Problem Statement 3, the entire backend was rapidly refactored into an Autonomous Tech Persona Agent, utilizing the same event-driven microservice pattern (Java Spring Boot + Python FastAPI).
 
 ---
 
-## Prompt 1: System Initialization
-**Tool Used:** Claude Desktop
-**Prompt:**
-Please initialize the main backend for "Project Director AI" using Java 21 and Spring Boot. This core orchestrator will manage an autonomous cinematic production pipeline.
+## Phase 1: Initial Architecture (Video Production Pipeline)
+*We initially built a state machine to handle sequential AI video generation tasks. These prompts reflect the foundational setup of the dual-backend system.*
 
-Please generate the necessary directory structure and the main application class for an empty Spring Boot project. I want the base package to be: `com.aicreator.directorai`.
+**Prompt 1:**
+> "Design a microservice architecture using Java 21 Spring Boot for an orchestrator and Python FastAPI for an AI processing engine. The Java app needs to store jobs in an H2 database with stages INITIATED, SCRIPTWRITING, and COMPLETED."
 
-Ensure the `director-ai/pom.xml` includes the standard starter dependencies for Spring Web, Spring Data JPA, H2 Database (for in-memory state persistence), and Lombok (for clean model code).
+**Prompt 2:**
+> "Write the Python FastAPI code to receive a job_id, call the Claude 3.5 Sonnet API to write a video script based on a theme, and patch the results back to the Java server."
 
-**Output Summary:**
-Generated complete Spring Boot directory structure, `director-ai/pom.xml` with required dependencies, `application.properties` for H2 configuration, and the main `DirectorAiApplication.java` entry point.
+**Prompt 3:**
+> "I am getting a 404 error from the Breeth API when trying to call Claude. How do I fix the `claude_service.py` to call Anthropic directly using my `sk-ant-...` key?"
 
----
-
-## Prompt 2: Core State Machine & Domain Models
-**Tool Used:** Claude Desktop
-**Prompt:**
-We are building the core domain layer for "Project Director AI" inside `com.aicreator.directorai`.
-
-Please create the following classes and enums:
-1. `model.ProductionStage` (Enum): INITIATED, IDEATION, SCRIPTWRITING, SHOTLIST_GENERATION, THUMBNAIL_PROMPTING, COMPLETED, FAILED
-2. `entity.ProductionJob` (JPA Entity): UUID id, String title, String theme, ProductionStage currentStage, String generatedScript, String shotListJson, String thumbnailPrompt, LocalDateTime createdAt, LocalDateTime updatedAt
-3. `repository.ProductionJobRepository` (Spring Data JPA Interface)
-4. `dto.CreateJobRequest` (Record)
-5. `dto.JobStatusResponse` (Record)
-
-Please ensure proper JPA annotations, clean structure, and Lombok annotations where applicable.
-
-**Output Summary:**
-Generated `ProductionStage.java`, `ProductionJob.java`, `ProductionJobRepository.java`, `CreateJobRequest.java`, and `JobStatusResponse.java` with complete JPA and Lombok configurations.
+**Prompt 4 (Testing Payload):**
+> "Generate a test JSON payload to send via Postman to the Spring Boot server to test the video pipeline. Use the theme of a 'Gorakhpur Travel Vlog'."
 
 ---
 
-## Prompt 3: Orchestration Service & REST API Layer
-**Tool Used:** Claude Desktop
-**Prompt:**
-We need to implement the business logic and REST endpoints for "Project Director AI" inside `com.aicreator.directorai`.
+## Phase 2: The Pivot (Problem Statement 3 - Autonomous Agent)
+*Upon realizing the submission required an autonomous social media persona (not a video script tool), the architecture was pivoted.*
 
-Please create the following classes:
-1. `service.ProductionJobService`: Methods for createJob, getJobById, getAllJobs, and updateJobStageAndArtifacts.
-2. `controller.ProductionJobController`: REST endpoints for POST /api/v1/jobs, GET /api/v1/jobs/{id}, GET /api/v1/jobs, and PATCH /api/v1/jobs/{id}/advance.
+**Prompt 5:**
+> "[Pasted full ViCodathon Problem Statement 3 guidelines] these are the guidelines for the project. go through it and find if we miss anything"
 
-Ensure proper Spring annotations (`@Service`, `@RestController`, `@RequestMapping`, `@CrossOrigin`), clean exception handling, and dependency injection via constructors.
+**Prompt 6:**
+> "okay lets fix everything one by one. Update the Java Spring Boot Data Models to include AgentProfile and FeedPost. Add the endpoints POST /api/agent/init and GET /api/agent/feed?agentId=..."
 
-**Output Summary:**
-Generated `ProductionJobService.java`, `ProductionJobController.java`, `AdvanceJobRequest.java`, `GlobalExceptionHandler.java`, and `ResourceNotFoundException.java` to complete the REST API.
+**Prompt 7:**
+> "Step 1 Done and we will move to Step 2: Python Autonomous Engine (Live Topic Discovery, Editorial Judgment & 48-Hour Loop)!"
+
+**Prompt 8:**
+> "Write a DiscoveryService in Python using feedparser to pull live RSS feeds from TechCrunch and Hacker News. Then write the background loop using asyncio to run every 30 minutes, evaluate topics using Claude, and post to the Java backend."
 
 ---
 
-## Prompt 4: Python Cognitive Engine Implementation
-**Tool Used:** Claude Desktop / Manual Fallback
-**Prompt:**
-We are building the Python AI Reasoning Service for "Project Director AI". This service acts as the cognitive engine that uses Claude to autonomously generate video scripts, shot lists, and thumbnail prompts.
+## Phase 3: Cloud Deployment & Troubleshooting
+*Deploying the microservices to Render to meet the 'Live Demo URL' requirement.*
 
-Please create a clean Python application with the following structure:
-1. `requirements.txt`: fastapi, uvicorn, httpx, pydantic, python-dotenv
-2. `app/config.py`: Environment settings for `JAVA_BACKEND_URL` and `BREETH_API_KEY`.
-3. `app/services/claude_service.py`: Functions to generate_script, generate_shot_list, and generate_thumbnail_prompt via Claude API.
-4. `app/services/orchestrator_client.py`: Asynchronous function to process_production_pipeline and PATCH updates to the Java backend.
-5. `app/main.py`: FastAPI app exposing POST /generate to trigger the background tasks.
+**Prompt 9:**
+> "I am trying to deploy the Java Spring Boot app to Render but it don't have java option. [Attached screenshot of Render environment dropdown]"
 
-**Output Summary:**
-Constructed the complete FastAPI microservice structure (`requirements.txt`, `config.py`, `claude_service.py`, `orchestrator_client.py`, `main.py`) to handle autonomous API routing, integrated later with the Breeth persistent memory service.
+**Prompt 10:**
+> "Provide the exact Dockerfile needed to deploy a Maven Spring Boot application on Render using the Docker environment setting."
+
+**Prompt 11:**
+> "I am getting a Maven error: 'there is no POM in this directory' when running mvn clean install. I am in D:\Projects\director-ai\director-ai."
+
+**Prompt 12:**
+> "Docker build is failing on Render with: 'failed to calculate checksum of ref... /src: not found'. My pom.xml and src folder are nested inside the director-ai folder."
+
+**Prompt 13:**
+> "Render Python deployment is failing with: 'Root directory python-engine does not exist'. The folder is actually inside the director-ai folder."
+
+**Prompt 14:**
+> "we have to submit in this form means we need to show the frontend. [Attached screenshot of submission form showing 'Live URL' placeholder as a vercel.app link]."
+
+**Prompt 15:**
+> "Write a RootController for the Java Spring Boot app that returns a friendly 'System Online' message so the judges don't see a Whitelabel Error Page when they click the Live URL."
