@@ -11,10 +11,10 @@ Please initialize the main backend for "Project Director AI" using Java 21 and S
 
 Please generate the necessary directory structure and the main application class for an empty Spring Boot project. I want the base package to be: `com.aicreator.directorai`.
 
-Ensure the `pom.xml` includes the standard starter dependencies for Spring Web, Spring Data JPA, H2 Database (for in-memory state persistence), and Lombok (for clean model code).
+Ensure the `director-ai/pom.xml` includes the standard starter dependencies for Spring Web, Spring Data JPA, H2 Database (for in-memory state persistence), and Lombok (for clean model code).
 
 **Output Summary:**
-Generated complete Spring Boot directory structure, `pom.xml` with required dependencies, `application.properties` for H2 configuration, and the main `DirectorAiApplication.java` entry point.
+Generated complete Spring Boot directory structure, `director-ai/pom.xml` with required dependencies, `application.properties` for H2 configuration, and the main `DirectorAiApplication.java` entry point.
 
 ---
 

@@ -29,7 +29,7 @@ Director AI utilizes a dual-backend microservice approach to separate state orch
 * Python 3.13 installed
 
 ### 1. Start the Java Orchestrator
-Navigate to the root directory containing the `pom.xml` and run:
+Navigate to the root directory containing the `director-ai/pom.xml` and run:
 ```bash
 mvn clean install
 mvn spring-boot:run
