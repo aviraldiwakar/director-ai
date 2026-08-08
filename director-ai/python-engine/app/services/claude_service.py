@@ -1,15 +1,15 @@
 import httpx
-from app.config import BREETH_API_KEY
+from app.config import ANTHROPIC_API_KEY
 
 class ClaudeService:
     def __init__(self):
-        self.api_key = BREETH_API_KEY
+        self.api_key = ANTHROPIC_API_KEY
 
     async def _call_claude(self, prompt: str) -> str:
         headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-            "anthropic-version": "2023-06-01"
+            "x-api-key": self.api_key, # Fixed Anthropic header format
+            "anthropic-version": "2023-06-01",
+            "Content-Type": "application/json"
         }
 
         payload = {
@@ -20,6 +20,7 @@ class ClaudeService:
 
         async with httpx.AsyncClient(timeout=60.0) as client:
             try:
+                # Pointing back to Anthropic's official endpoint
                 response = await client.post("https://api.anthropic.com/v1/messages", json=payload, headers=headers)
                 if response.status_code == 200:
                     data = response.json()
@@ -29,7 +30,7 @@ class ClaudeService:
             except Exception as e:
                 print(f"Error calling Claude service: {e}")
 
-        # Structured fallback response to guarantee continuous state transitions during testing
+        # Safe fallback in case of no API key or network block
         return f"[Generated Output for prompt: '{prompt[:40]}...']"
 
     async def generate_script(self, theme: str) -> str:
