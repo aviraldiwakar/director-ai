@@ -49,4 +49,4 @@ async def run_autonomous_loop():
             print(f"Error in autonomous loop: {e}")
 
         # Wait 30 minutes before running again (For testing, you can change this to 120 seconds!)
-        await asyncio.sleep(1800)
+        await asyncio.sleep(60)
